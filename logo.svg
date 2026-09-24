@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+<rect width="320" height="320" rx="48" fill="#7A2A90"/>
+<circle cx="160" cy="118" r="78" fill="none" stroke="#F4EDE4" stroke-width="6"/>
+<text x="160" y="250" text-anchor="middle" fill="#F4EDE4" font-family="Cairo, sans-serif" font-size="28" font-weight="700">نوار سينما</text>
+<text x="160" y="282" text-anchor="middle" fill="#F4EDE4" font-family="Syne, sans-serif" font-size="16">Noir Cinema</text>
+</svg>
