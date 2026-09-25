@@ -1,122 +1,121 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<title>نوار سينما</title>
-<link rel="icon" href="logo.svg?v=2"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Syne:wght@600;800&display=swap" rel="stylesheet"/>
+<title>NOIR CINEMA — PROTOCOL</title>
+<meta name="description" content="Noir Cinema public node. Halls, vault, inventory, ledger."/>
+<link rel="icon" href="logo.svg?v=3"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;700;900&family=UnifrakturMaguntia&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/isoWeek.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/weekOfYear.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/localizedFormat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/ar.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<style>
-  :root{ --deep:#7A2A90; --core:#4B1150; --fade:#F4EDE4; --spark:#ACA8A7; --void:#07040C; }
-  *{box-sizing:border-box}
-  html,body{margin:0;min-height:100%;background:var(--void);color:var(--fade);font-family:Cairo,sans-serif}
-  body{overflow-x:hidden}
-  .bg{position:fixed;inset:0;pointer-events:none;background:
-      radial-gradient(900px 400px at 80% -10%, rgba(122,42,144,.45), transparent 60%),
-      radial-gradient(700px 380px at 0% 110%, rgba(75,17,80,.55), transparent 55%),
-      repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(122,42,144,.07) 48px),
-      repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(122,42,144,.07) 48px);}
-  header{position:sticky;top:0;z-index:30;backdrop-filter:blur(18px);background:rgba(7,4,12,.72);border-bottom:1px solid rgba(244,237,228,.08)}
-  .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;max-width:1120px;margin:0 auto;padding:14px 16px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand img{width:56px;height:56px;border-radius:16px;box-shadow:0 0 0 1px rgba(244,237,228,.18), 0 0 22px rgba(122,42,144,.65)}
-  nav.desk{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:999px;background:rgba(244,237,228,.04);border:1px solid rgba(244,237,228,.12)}
-  nav a{color:var(--spark);text-decoration:none;font-size:13px;padding:8px 12px;border-radius:999px}
-  nav a.on, nav a:hover{background:var(--deep);color:#fff}
-  .burger{display:none;width:42px;height:42px;border:1px solid rgba(244,237,228,.15);border-radius:12px;background:transparent;color:var(--fade)}
-  .dates{display:flex;flex-wrap:wrap;gap:8px;max-width:1120px;margin:0 auto;padding:10px 16px 0}
-  .chip{background:rgba(122,42,144,.18);border:1px solid rgba(122,42,144,.35);border-radius:999px;padding:6px 12px;font-size:12px}
-  main{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:18px 16px 80px}
-  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center}
-  h1{font-size:clamp(36px,7vw,74px);line-height:1;margin:8px 0}
-  .kicker{font-family:Syne,sans-serif;letter-spacing:.34em;color:var(--deep);font-size:11px}
-  .en{font-family:Syne,sans-serif;color:var(--spark);font-size:18px;direction:ltr;unicode-bidi:isolate;text-align:right}
-  .lead{color:var(--spark);line-height:1.8}
-  .mark{justify-self:center;position:relative;width:min(280px,68vw)}
-  .mark::before{content:"";position:absolute;inset:-16%;border-radius:50%;border:1px solid rgba(122,42,144,.35);box-shadow:0 0 70px rgba(122,42,144,.35)}
-  .mark img{position:relative;z-index:1;width:100%;border-radius:26px}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px}
-  .card{padding:20px;border-radius:20px;background:linear-gradient(165deg, rgba(244,237,228,.07), rgba(122,42,144,.08));border:1px solid rgba(244,237,228,.12)}
-  .panel{margin-top:22px;padding:18px;border-radius:20px;border:1px solid rgba(244,237,228,.12);background:rgba(244,237,228,.03)}
-  .mob{display:none;position:fixed;inset:0;z-index:40;background:rgba(7,4,12,.92);padding:24px;flex-direction:column;gap:14px}
-  .mob a{color:var(--fade);text-decoration:none;font-size:22px;font-weight:800}
-  @media (max-width:860px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}nav.desk{display:none}.burger{display:grid;place-items:center}}
-</style>
+<link rel="stylesheet" href="theme.css"/>
 </head>
 <body>
-<div class="bg"></div>
+<div class="sprocket l"></div>
+<div class="sprocket r"></div>
+<canvas id="field"></canvas>
+<div class="grain"></div>
+<div class="cursor" id="cur"><b></b></div>
+<div id="boot"><pre id="bootlog"></pre></div>
 <header>
-  <div class="bar">
-    <div class="brand">
-      <img src="logo.svg?v=2" alt="نوار سينما"/>
-      <div><b style="font-family:Syne,sans-serif;letter-spacing:.2em;font-size:12px">NOIR CINEMA</b><div style="color:#ACA8A7;font-size:13px">نوار سينما</div></div>
-    </div>
-    <nav class="desk">
-      <a class="on" href="#home">الرئيسية</a>
-      <a href="#halls">القاعات</a>
-      <a href="#store">المستودع</a>
-      <a href="#inv">الجرد</a>
-      <a href="#led">السجل</a>
-    </nav>
-    <button class="burger" id="open" aria-label="القائمة">☰</button>
+  <div class="brand">
+    <img src="logo.svg?v=3" alt="Noir Cinema"/>
+    <div>NOIR CINEMA<small data-i="tag">PUBLIC NODE · 0xNC</small></div>
+  </div>
+  <div class="mid" id="clock">SYNC</div>
+  <div class="acts">
+    <button id="enBtn" class="on">EN</button>
+    <button id="arBtn">AR</button>
+    <button id="connect" data-i="connect">CONNECT NODE</button>
   </div>
 </header>
-<div class="dates" id="dates"></div>
-<div class="mob" id="mob">
-  <button class="burger" id="close">✕</button>
-  <a href="#home">الرئيسية</a><a href="#halls">القاعات</a><a href="#store">المستودع</a><a href="#inv">الجرد</a><a href="#led">السجل</a>
-</div>
-<main>
+<div class="wrap">
   <section class="hero" id="home">
     <div>
-      <div class="kicker">NOIR NODE</div>
-      <h1>نوار سينما</h1>
-      <div class="en">Halls · warehouse · candy bar</div>
-      <p class="lead">شبكة تشغيل الفروع بهوية نوار. القاعات والمستودع والجرد في طبقة واحدة.</p>
+      <div class="ghost" data-i="ghost">cinema as protocol</div>
+      <h1>NOIR<span>CINEMA</span></h1>
+      <p class="lede" data-i="lede">Not a brochure. A live operating surface for halls, cold vault, candy inventory and the intake ledger. English by default. Flip to Arabic when the room needs it.</p>
+      <div class="meta" id="dates"></div>
     </div>
-    <div class="mark"><img src="logo.svg?v=2" alt="Noir Cinema"/></div>
+    <aside class="stamp">
+      <div class="hash" id="hash">hash · mining frame</div>
+      <img src="logo.svg?v=3" alt="mark"/>
+      <div>
+        <div class="k" data-i="sig">OPERATOR SIGNATURE</div>
+        <div data-i="sigv">4skylr / noir-cinema</div>
+      </div>
+    </aside>
   </section>
-  <section class="grid">
-    <article class="card" id="halls"><div class="en">HALLS</div><h3>القاعات</h3><p>٤ قاعات · خرائط المقاعد وجدول التنظيف</p></article>
-    <article class="card" id="store"><div class="en">WAREHOUSE</div><h3>المستودع</h3><p><span style="unicode-bidi:isolate">١٥–٢٥°م</span> · اشتراطات التخزين</p></article>
-    <article class="card" id="inv"><div class="en">INVENTORY</div><h3>الجرد</h3><p>هوت دوق · فشار · ناتشوز</p></article>
-    <article class="card" id="led"><div class="en">LEDGER</div><h3>السجل</h3><p>استلام المنتجات وحفظ الحركة</p></article>
+  <div class="rail"><b id="ticker"></b></div>
+  <section class="block" id="halls">
+    <div class="k">01 — HALLS</div>
+    <h2 data-i="hallsTitle">Four rooms. One chain of seats.</h2>
+    <div class="cols">
+      <article class="cell"><em>H01</em><h3 data-i="h1t">Hall Alpha</h3><p data-i="h1p">218 seats · IMAX throw · clean cycle 00:40</p></article>
+      <article class="cell"><em>H02</em><h3 data-i="h2t">Hall Beta</h3><p data-i="h2p">164 seats · Dolby rack · clean cycle 00:32</p></article>
+      <article class="cell"><em>H03</em><h3 data-i="h3t">Hall Gamma</h3><p data-i="h3p">96 seats · VIP recline · clean cycle 00:28</p></article>
+      <article class="cell"><em>H04</em><h3 data-i="h4t">Hall Delta</h3><p data-i="h4p">72 seats · kids / festival · clean cycle 00:24</p></article>
+    </div>
   </section>
-  <section class="panel">
-    <div class="en">WEEK SIGNAL</div>
-    <h3 style="margin:6px 0 14px">إشارة الأسبوع</h3>
-    <canvas id="chart"></canvas>
+  <section class="block" id="store">
+    <div class="k">02 — VAULT</div>
+    <h2 data-i="vaultTitle">Warehouse is a temperature contract.</h2>
+    <div class="split">
+      <div class="vault">
+        <div class="k" data-i="cold">COLD BAND</div>
+        <p data-i="coldp">Hold between 15–25°C. Door state is binary. Open is an event, not a habit.</p>
+        <div class="bar"><i id="temp"></i></div>
+        <p style="margin-top:10px;font-size:11px;color:var(--acid)" id="tempv">21.4°C</p>
+      </div>
+      <div class="vault">
+        <div class="k" data-i="rules">RULES</div>
+        <p data-i="rulesp">FIFO on candy. Locked cage for high-value SKUs. No cardboard on wet floors. Photograph every intake.</p>
+      </div>
+    </div>
   </section>
-</main>
-<script>
-  dayjs.extend(window.dayjs_plugin_isoWeek);
-  dayjs.extend(window.dayjs_plugin_weekOfYear);
-  dayjs.extend(window.dayjs_plugin_localizedFormat);
-  dayjs.locale('ar');
-  const now = dayjs();
-  const hijri = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day:'numeric', month:'long', year:'numeric' }).format(new Date());
-  document.getElementById('dates').innerHTML = `
-    <span class="chip">اليوم <b>${now.format('dddd')}</b></span>
-    <span class="chip">الميلادي <b>${now.format('D MMMM YYYY')}</b></span>
-    <span class="chip">الهجري <b>${hijri}</b></span>
-    <span class="chip">أسبوع السنة <b>${now.isoWeek()}</b> / ${now.isoWeekYear()}</span>
-  `;
-  const mob = document.getElementById('mob');
-  document.getElementById('close').onclick = () => mob.style.display = 'none';
-  document.getElementById('open').onclick = () => mob.style.display = 'flex';
-  mob.querySelectorAll('a').forEach(a => a.onclick = () => mob.style.display = 'none');
-  new Chart(document.getElementById('chart'), {
-    type: 'line',
-    data: { labels: ['سبت','أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة'],
-      datasets: [{ label: 'حركة تشغيل', data: [12,19,15,22,28,24,18], borderColor:'#7A2A90', backgroundColor:'rgba(122,42,144,.25)', fill:true, tension:.35, pointBackgroundColor:'#F4EDE4'}] },
-    options: { plugins:{ legend:{ labels:{ color:'#F4EDE4' } } }, scales:{ x:{ ticks:{color:'#ACA8A7'}, grid:{color:'rgba(122,42,144,.15)'} }, y:{ ticks:{color:'#ACA8A7'}, grid:{color:'rgba(122,42,144,.15)'} } } }
-  });
-</script>
+  <section class="block" id="inv">
+    <div class="k">03 — INVENTORY</div>
+    <h2 data-i="invTitle">Tokens you can eat.</h2>
+    <div class="cols">
+      <article class="cell"><em>SKU-01</em><h3 data-i="i1t">Hot dog</h3><p data-i="i1p">Roll + frank + sauces. Count at open and close.</p></article>
+      <article class="cell"><em>SKU-02</em><h3 data-i="i2t">Popcorn</h3><p data-i="i2p">Kernel bins, oil, salt. Pop only against showtime load.</p></article>
+      <article class="cell"><em>SKU-03</em><h3 data-i="i3t">Nachos</h3><p data-i="i3p">Chips + cheese well. Temp log every two hours.</p></article>
+      <article class="cell"><em>SKU-04</em><h3 data-i="i4t">Soda line</h3><p data-i="i4p">Syrup tanks and CO2. Treat as a pressure system.</p></article>
+    </div>
+  </section>
+  <section class="block" id="led">
+    <div class="k">04 — LEDGER</div>
+    <h2 data-i="ledTitle">Week signal. Intake is append-only.</h2>
+    <canvas id="signal"></canvas>
+  </section>
+  <section class="block" id="stack">
+    <div class="k">05 — STACK</div>
+    <h2 data-i="stackTitle">Famous GitHub libraries in this node.</h2>
+    <div class="stack">
+      <span class="lib"><a href="https://github.com/mrdoob/three.js" target="_blank">mrdoob/three.js</a></span>
+      <span class="lib"><a href="https://github.com/greensock/GSAP" target="_blank">greensock/GSAP</a></span>
+      <span class="lib"><a href="https://github.com/darkroomengineering/lenis" target="_blank">darkroomengineering/lenis</a></span>
+      <span class="lib"><a href="https://github.com/juliangarnier/anime" target="_blank">juliangarnier/anime</a></span>
+      <span class="lib"><a href="https://github.com/goldfire/howler.js" target="_blank">goldfire/howler.js</a></span>
+      <span class="lib"><a href="https://github.com/iamkun/dayjs" target="_blank">iamkun/dayjs</a></span>
+      <span class="lib"><a href="https://github.com/chartjs/Chart.js" target="_blank">chartjs/Chart.js</a></span>
+    </div>
+  </section>
+  <footer>
+    <div>NOIR CINEMA · source of truth</div>
+    <div>github.com/4skylr/noir-cinema</div>
+  </footer>
+</div>
+<script src="app.js"></script>
 </body>
 </html>
